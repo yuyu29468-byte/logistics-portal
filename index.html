@@ -61,9 +61,7 @@
       border:1px solid rgba(255,255,255,.18);
     }
     .logo svg{width:24px;height:24px}
-    .title{
-      line-height:1.1;
-    }
+    .title{ line-height:1.1; }
     .title .h{
       font-weight:800;
       letter-spacing:.02em;
@@ -148,7 +146,7 @@
       align-items:center;
       justify-content:center;
       gap:10px;
-      padding:14px 14px;
+      padding:14px;
       border-radius:16px;
       border:0;
       color:#071018;
@@ -157,12 +155,10 @@
       font-size:15px;
       background:linear-gradient(135deg, var(--accent2), var(--accent));
       box-shadow:0 14px 40px rgba(47,164,169,.18);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
       cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
     }
     .btn:active{ transform:scale(.98); }
-
     .btn svg{ width:18px;height:18px; }
 
     .hint{
@@ -172,32 +168,23 @@
       color:rgba(234,240,255,.55);
     }
 
-    /* “公式っぽい” ローディング */
     .spinner{
       width:16px;height:16px;
       border-radius:50%;
       border:2px solid rgba(255,255,255,.35);
       border-top-color:#fff;
       animation:spin .8s linear infinite;
-      display:inline-block;
     }
     @keyframes spin{ to{ transform:rotate(360deg); } }
-
-    /* モーション減らす */
-    @media (prefers-reduced-motion: reduce){
-      .spinner{ animation:none; }
-      .btn:active{ transform:none; }
-    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
     <div class="brand">
-      <div class="logo" aria-hidden="true">
-        <!-- 物流っぽい箱アイコン -->
+      <div class="logo">
         <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8V8.2Z" stroke="rgba(255,255,255,.95)" stroke-width="1.5" />
+          <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8V8.2Z" stroke="rgba(255,255,255,.95)" stroke-width="1.5"/>
           <path d="M12 4v18" stroke="rgba(255,255,255,.75)" stroke-width="1.2"/>
           <path d="M4 8.2 12 12l8-3.8" stroke="rgba(255,255,255,.75)" stroke-width="1.2"/>
         </svg>
@@ -214,7 +201,7 @@
           <span class="pill" id="pill">接続確認</span>
           <div class="statusText" id="statusText">準備中…</div>
         </div>
-        <div class="dot" id="dot" aria-hidden="true"></div>
+        <div class="dot" id="dot"></div>
       </div>
 
       <p class="big">ポータルを開く</p>
@@ -223,8 +210,8 @@
         このページをホーム画面に追加して、いつでも1タップで開けます。
       </p>
 
-      <button class="btn" id="openBtn">
-        <span id="btnIcon" class="spinner" aria-hidden="true"></span>
+      <button class="btn" id="openBtn" disabled>
+        <span id="btnIcon" class="spinner"></span>
         <span id="btnLabel">認証中…</span>
       </button>
 
@@ -233,8 +220,7 @@
   </div>
 
   <script>
-    // ▼ここだけ自分のGAS WebアプリURLに置き換え
-    const GAS_URL = "https://script.google.com/macros/s/ここにあなたのURL/exec";
+    const GAS_URL = "https://script.google.com/macros/s/あなたのURL/exec";
 
     const pill = document.getElementById("pill");
     const statusText = document.getElementById("statusText");
@@ -243,14 +229,13 @@
     const btnLabel = document.getElementById("btnLabel");
     const btnIcon = document.getElementById("btnIcon");
 
-    // “公式っぽい”演出：数秒で「認証OK」にしてボタンを「ログイン」へ
     function setReady(){
       pill.textContent = "認証OK";
       statusText.textContent = "ログインできます";
       dot.classList.add("on");
 
       btnIcon.outerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
           <path d="M10 17l5-5-5-5" stroke="#071018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           <path d="M4 12h10" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
           <path d="M14 4h5v16h-5" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
@@ -260,12 +245,9 @@
       btn.disabled = false;
     }
 
-    btn.disabled = true;
-    setTimeout(setReady1500);  // 0.9秒
-    // もうちょい“それっぽく”するなら 1400 とかにしてもOK
+    setTimeout(setReady, 1500);
 
     btn.addEventListener("click", () => {
-      // クリック後の見た目（ほんの一瞬）
       btnLabel.textContent = "接続中…";
       btn.style.opacity = "0.92";
       setTimeout(() => { location.href = GAS_URL; }, 180);
