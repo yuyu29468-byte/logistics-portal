@@ -43,6 +43,71 @@
 
     .wrap{ width:min(420px, 100%); }
 
+    /* ====== 最初の「文字だけ」認証画面 ====== */
+    .boot{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:55vh;
+      text-align:center;
+      transition: opacity .35s ease, transform .35s ease;
+    }
+    .boot.hide{
+      opacity:0;
+      transform: translateY(-6px);
+      pointer-events:none;
+      height:0;
+      min-height:0;
+      overflow:hidden;
+    }
+    .bootInner{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:900;
+      letter-spacing:.02em;
+      font-size:16px;
+      color:rgba(234,240,255,.92);
+    }
+    .bootSub{
+      margin-top:10px;
+      font-size:12px;
+      color:rgba(234,240,255,.55);
+    }
+
+    .spinner{
+      width:16px;height:16px;
+      border-radius:50%;
+      border:2px solid rgba(255,255,255,.35);
+      border-top-color:#fff;
+      animation:spin .75s linear infinite;
+      display:inline-block;
+    }
+    @keyframes spin{ to{ transform:rotate(360deg); } }
+
+    /* ====== 3ブロック共通 ====== */
+    .block{
+      opacity:0;
+      transform: translateY(18px) scale(.94);
+      filter: blur(2px);
+      pointer-events:none;
+    }
+    .block.show{
+      opacity:1;
+      filter: blur(0);
+      pointer-events:auto;
+      animation: megaPop .62s cubic-bezier(.18,1.35,.2,1) both;
+    }
+
+    /* “もっと跳ねる” ポップ */
+    @keyframes megaPop{
+      0%   { transform: translateY(20px) scale(.90); }
+      55%  { transform: translateY(-10px) scale(1.08); }
+      78%  { transform: translateY(4px)  scale(.98); }
+      100% { transform: translateY(0)    scale(1); }
+    }
+
+    /* ===== ブロック1：タイトル ===== */
     .brand{
       display:flex;
       align-items:center;
@@ -58,10 +123,10 @@
     }
     .logo svg{width:24px;height:24px}
     .title{ line-height:1.15; }
-    .title .h{ font-weight:800; letter-spacing:.02em; font-size:18px; }
+    .title .h{ font-weight:900; letter-spacing:.02em; font-size:18px; }
     .title .s{ margin-top:4px; font-size:12px; color:var(--muted); letter-spacing:.02em; }
 
-    /* ===== 認証ステータス（上段） ===== */
+    /* ===== ブロック2：認証OK ===== */
     .statusRow{
       display:flex;
       align-items:center;
@@ -81,12 +146,12 @@
     }
     .pill{
       font-size:12px;
-      font-weight:750;
+      font-weight:850;
       padding:6px 10px;
       border-radius:999px;
       background:rgba(47,164,169,.16);
       border:1px solid rgba(47,164,169,.25);
-      color:rgba(234,240,255,.9);
+      color:rgba(234,240,255,.92);
       white-space:nowrap;
     }
     .statusText{
@@ -104,10 +169,10 @@
     }
     .dot.on{
       background:var(--accent2);
-      box-shadow:0 0 0 6px rgba(124,231,222,.10), 0 0 22px rgba(124,231,222,.25);
+      box-shadow:0 0 0 6px rgba(124,231,222,.10), 0 0 22px rgba(124,231,222,.28);
     }
 
-    /* ===== ログインカード（ポップで出す） ===== */
+    /* ===== ブロック3：カード ===== */
     .card{
       background:linear-gradient(180deg, var(--card), var(--card2));
       border:1px solid var(--line);
@@ -115,37 +180,10 @@
       box-shadow:var(--shadow);
       padding:16px;
     }
-
-    /* 最初は隠す（透明 + 少し下 + ちょい小さめ） */
-    .card.pop{
-      opacity:0;
-      transform: translateY(14px) scale(.985);
-      filter: blur(2px);
-      pointer-events:none;
-      transition: opacity .38s ease, transform .38s cubic-bezier(.2,1.2,.2,1), filter .38s ease;
-    }
-    /* 出現状態 */
-    .card.pop.show{
-      opacity:1;
-      transform: translateY(0) scale(1);
-      filter: blur(0);
-      pointer-events:auto;
-    }
-
-    /* 出る瞬間の“ポップ”を強めたいなら、出現時に軽く跳ねる */
-    .card.pop.show.bounce{
-      animation: popBounce .46s cubic-bezier(.2,1.2,.2,1) both;
-    }
-    @keyframes popBounce{
-      0%{ transform: translateY(14px) scale(.985); }
-      70%{ transform: translateY(-2px) scale(1.01); }
-      100%{ transform: translateY(0) scale(1); }
-    }
-
     .big{
       margin:0 0 6px;
       font-size:16px;
-      font-weight:850;
+      font-weight:900;
       letter-spacing:.02em;
     }
     .desc{
@@ -173,9 +211,9 @@
       user-select:none;
       -webkit-tap-highlight-color: transparent;
       cursor:pointer;
+      transition: transform .12s ease, opacity .12s ease;
     }
-    .btn:active{ transform:scale(.98); }
-    .btn svg{ width:18px;height:18px; }
+    .btn:active{ transform:scale(.97); }
 
     .hint{
       text-align:center;
@@ -184,28 +222,30 @@
       color:rgba(234,240,255,.55);
     }
 
-    .spinner{
-      width:16px;height:16px;
-      border-radius:50%;
-      border:2px solid rgba(255,255,255,.35);
-      border-top-color:#fff;
-      animation:spin .8s linear infinite;
-      display:inline-block;
-    }
-    @keyframes spin{ to{ transform:rotate(360deg); } }
-
     @media (prefers-reduced-motion: reduce){
       .spinner{ animation:none; }
+      .block, .block.show, .boot{ transition:none; animation:none; }
       .btn:active{ transform:none; }
-      .card.pop{ transition:none; }
-      .card.pop.show.bounce{ animation:none; }
     }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    <div class="brand">
+
+    <!-- 最初はここだけ表示（文字だけ + ぐるぐる） -->
+    <div class="boot" id="boot">
+      <div>
+        <div class="bootInner">
+          <span class="spinner" aria-hidden="true"></span>
+          <span id="bootText">認証中…</span>
+        </div>
+        <div class="bootSub" id="bootSub">端末を確認しています</div>
+      </div>
+    </div>
+
+    <!-- ブロック1：タイトル -->
+    <div class="brand block" id="b1">
       <div class="logo" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none">
           <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8V8.2Z" stroke="rgba(255,255,255,.95)" stroke-width="1.5" />
@@ -219,17 +259,17 @@
       </div>
     </div>
 
-    <!-- まずはこれだけ見せる（認証中） -->
-    <div class="statusRow" aria-live="polite">
+    <!-- ブロック2：認証OK -->
+    <div class="statusRow block" id="b2" aria-live="polite">
       <div class="statusLeft">
-        <span class="pill" id="pill">認証中</span>
-        <div class="statusText" id="statusText">確認しています…</div>
+        <span class="pill" id="pill">認証OK</span>
+        <div class="statusText" id="statusText">ログインできます</div>
       </div>
-      <div class="dot" id="dot" aria-hidden="true"></div>
+      <div class="dot on" id="dot" aria-hidden="true"></div>
     </div>
 
-    <!-- これは最初は“隠れてる” → 後でポップして出す -->
-    <div class="card pop" id="loginCard">
+    <!-- ブロック3：カード -->
+    <div class="card block" id="b3">
       <p class="big">ポータルを開く</p>
       <p class="desc">
         ここは「ログイン」ページです。<br>
@@ -237,61 +277,64 @@
       </p>
 
       <button class="btn" id="openBtn">
-        <span id="btnIcon" class="spinner" aria-hidden="true"></span>
-        <span id="btnLabel">認証中…</span>
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;">
+          <path d="M10 17l5-5-5-5" stroke="#071018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M4 12h10" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
+          <path d="M14 4h5v16h-5" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <span id="btnLabel">ログイン</span>
       </button>
 
       <div class="hint">※ 実際の認証は行いません（見た目だけ）</div>
     </div>
+
   </div>
 
   <script>
     // ▼ あなたのGAS WebアプリURLに置き換える
     const GAS_URL = "https://script.google.com/macros/s/ここにあなたのURL/exec";
 
-    const pill = document.getElementById("pill");
-    const statusText = document.getElementById("statusText");
-    const dot = document.getElementById("dot");
+    const boot = document.getElementById("boot");
+    const bootText = document.getElementById("bootText");
+    const bootSub = document.getElementById("bootSub");
 
-    const card = document.getElementById("loginCard");
+    const b1 = document.getElementById("b1");
+    const b2 = document.getElementById("b2");
+    const b3 = document.getElementById("b3");
+
     const btn = document.getElementById("openBtn");
     const btnLabel = document.getElementById("btnLabel");
-    const btnIcon = document.getElementById("btnIcon");
 
-    function showCard(){
-      card.classList.add("show", "bounce");
-      // アニメが終わったら bounce を外して“落ち着かせる”
-      setTimeout(() => card.classList.remove("bounce"), 520);
+    // ① 文字だけ認証 → ② 認証OK表示 → ③ 3ブロックを1個ずつ跳ねて出す
+    function startSequence(){
+      // まず「認証中…」を見せる
+      bootText.textContent = "認証中…";
+      bootSub.textContent = "端末を確認しています";
+
+      // 1.1秒後：認証OKにする（文字だけのまま）
+      setTimeout(() => {
+        bootText.textContent = "認証OK";
+        bootSub.textContent = "ログインできます";
+      }, 1100);
+
+      // 1.55秒後：ブロック1ポップ
+      setTimeout(() => { b1.classList.add("show"); }, 1550);
+
+      // 1.85秒後：ブロック2ポップ
+      setTimeout(() => { b2.classList.add("show"); }, 1850);
+
+      // 2.15秒後：ブロック3ポップ ＋ bootをフェードアウト
+      setTimeout(() => {
+        boot.classList.add("hide");
+        b3.classList.add("show");
+      }, 2150);
     }
 
-    function setReady(){
-      pill.textContent = "認証OK";
-      statusText.textContent = "ログインできます";
-      dot.classList.add("on");
-
-      btnIcon.outerHTML = `
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M10 17l5-5-5-5" stroke="#071018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4 12h10" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
-          <path d="M14 4h5v16h-5" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      `;
-      btnLabel.textContent = "ログイン";
-      btn.disabled = false;
-    }
-
-    // 初期：ボタンは押せない（認証中）
-    btn.disabled = true;
-
-    // ▼ 演出タイムライン（ここだけ好みで調整）
-    // 0.6秒：カードがポップして出現
-    setTimeout(showCard, 600);
-
-    // 1.35秒：認証OKになる
-    setTimeout(setReady, 1350);
+    startSequence();
 
     btn.addEventListener("click", () => {
       btnLabel.textContent = "接続中…";
+      btn.style.opacity = "0.92";
       setTimeout(() => { location.href = GAS_URL; }, 180);
     });
   </script>
