@@ -41,24 +41,23 @@
       padding:18px;
     }
 
-    /* ここに“奥行き”を作る（真後ろから出す用） */
     .wrap{
       width:min(420px, 100%);
-      perspective: 900px;
+      perspective:900px;
     }
 
-    /* ===== 最初の「文字だけ」認証画面 ===== */
+    /* ===== boot（文字だけ） ===== */
     .boot{
       display:flex;
       align-items:center;
       justify-content:center;
       min-height:55vh;
       text-align:center;
-      transition: opacity .28s ease, transform .28s ease;
+      transition:opacity .24s ease, transform .24s ease;
     }
     .boot.hide{
       opacity:0;
-      transform: translateY(-6px);
+      transform:translateY(-6px);
       pointer-events:none;
       height:0;
       min-height:0;
@@ -69,9 +68,7 @@
       align-items:center;
       gap:10px;
       font-weight:900;
-      letter-spacing:.02em;
       font-size:16px;
-      color:rgba(234,240,255,.92);
     }
     .bootSub{
       margin-top:10px;
@@ -84,42 +81,37 @@
       border-radius:50%;
       border:2px solid rgba(255,255,255,.35);
       border-top-color:#fff;
-      animation:spin .75s linear infinite;
-      display:inline-block;
+      animation:spin .7s linear infinite;
     }
     @keyframes spin{ to{ transform:rotate(360deg); } }
 
-    /* ===== 3ブロック：真後ろ(Z)から順番に出す ===== */
+    /* ===== ブロック共通（奥から） ===== */
     .block{
       opacity:0;
-      transform: translateZ(-90px) translateY(10px) scale(.98);
+      transform:translateZ(-120px) translateY(10px) scale(.97);
       pointer-events:none;
-      transform-style: preserve-3d;
-      backface-visibility: hidden;
-      will-change: transform, opacity;
+      will-change:transform,opacity;
     }
-
     .block.show{
       opacity:1;
       pointer-events:auto;
-      animation: popFromBack .52s cubic-bezier(.18,1.25,.2,1) both,
-                 microJitter .22s ease-out .52s both;
+      animation:
+        popFromBack .44s cubic-bezier(.18,1.25,.25,1) both,
+        microJitter .14s ease-out .36s both;
     }
 
-    /* “奥から手前へ” */
     @keyframes popFromBack{
-      0%   { transform: translateZ(-100px) translateY(14px) scale(.96); opacity:0; }
-      65%  { transform: translateZ(16px)   translateY(-4px)  scale(1.02); opacity:1; }
-      100% { transform: translateZ(0)      translateY(0)     scale(1); }
+      0%   { transform:translateZ(-120px) translateY(14px) scale(.95); }
+      70%  { transform:translateZ(12px) translateY(-3px) scale(1.03); }
+      100% { transform:translateZ(0) translateY(0) scale(1); }
     }
 
-    /* 微振動（出現直後に一瞬だけ） */
+    /* 微振動（短く・1回だけ） */
     @keyframes microJitter{
-      0%   { transform: translateZ(0) translateX(0) translateY(0) }
-      20%  { transform: translateZ(0) translateX(-1px) translateY(0) }
-      40%  { transform: translateZ(0) translateX(1px) translateY(0) }
-      60%  { transform: translateZ(0) translateX(-1px) translateY(0) }
-      100% { transform: translateZ(0) translateX(0) translateY(0) }
+      0%  { transform:translateX(0); }
+      40% { transform:translateX(-1px); }
+      80% { transform:translateX(1px); }
+      100%{ transform:translateX(0); }
     }
 
     /* ===== ブロック1：タイトル ===== */
@@ -137,219 +129,130 @@
       border:1px solid rgba(255,255,255,.18);
     }
     .logo svg{width:24px;height:24px}
-    .title{ line-height:1.15; }
-    .title .h{ font-weight:900; letter-spacing:.02em; font-size:18px; }
-    .title .s{ margin-top:4px; font-size:12px; color:var(--muted); letter-spacing:.02em; }
+    .title .h{ font-size:18px;font-weight:900; }
+    .title .s{ font-size:12px;color:var(--muted);margin-top:4px; }
 
     /* ===== ブロック2：認証OK ===== */
     .statusRow{
       display:flex;
-      align-items:center;
       justify-content:space-between;
-      gap:10px;
+      align-items:center;
       padding:10px 12px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
       background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.1);
       margin-bottom:14px;
     }
-    .statusLeft{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      min-width:0;
-    }
+    .statusLeft{ display:flex;align-items:center;gap:10px; }
     .pill{
-      font-size:12px;
-      font-weight:850;
       padding:6px 10px;
       border-radius:999px;
+      font-size:12px;
+      font-weight:850;
       background:rgba(47,164,169,.16);
       border:1px solid rgba(47,164,169,.25);
-      color:rgba(234,240,255,.92);
-      white-space:nowrap;
     }
-    .statusText{
-      font-size:13px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-    }
+    .statusText{ font-size:13px;color:var(--muted); }
     .dot{
-      width:10px;height:10px;border-radius:99px;
-      background:rgba(255,255,255,.25);
-      position:relative;
-      box-shadow:0 0 0 6px rgba(255,255,255,.06);
-    }
-    .dot.on{
+      width:10px;height:10px;border-radius:50%;
       background:var(--accent2);
-      box-shadow:0 0 0 6px rgba(124,231,222,.10), 0 0 22px rgba(124,231,222,.28);
+      box-shadow:0 0 0 6px rgba(124,231,222,.12);
     }
 
     /* ===== ブロック3：カード ===== */
     .card{
       background:linear-gradient(180deg, var(--card), var(--card2));
-      border:1px solid var(--line);
       border-radius:var(--radius);
+      border:1px solid var(--line);
       box-shadow:var(--shadow);
       padding:16px;
     }
-    .big{
-      margin:0 0 6px;
-      font-size:16px;
-      font-weight:900;
-      letter-spacing:.02em;
-    }
-    .desc{
-      margin:0 0 14px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.55;
-    }
+    .big{ font-size:16px;font-weight:900;margin:0 0 6px; }
+    .desc{ font-size:13px;color:var(--muted);margin:0 0 14px; }
 
     .btn{
       width:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      padding:14px 14px;
+      padding:14px;
       border-radius:16px;
       border:0;
-      color:#071018;
-      font-weight:900;
-      letter-spacing:.02em;
       font-size:15px;
+      font-weight:900;
       background:linear-gradient(135deg, var(--accent2), var(--accent));
-      box-shadow:0 14px 40px rgba(47,164,169,.18);
-      user-select:none;
-      -webkit-tap-highlight-color: transparent;
       cursor:pointer;
-      transition: transform .12s ease, opacity .12s ease;
-    }
-    .btn:active{ transform:scale(.97); }
-
-    .hint{
-      text-align:center;
-      margin-top:12px;
-      font-size:12px;
-      color:rgba(234,240,255,.55);
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      .spinner{ animation:none; }
-      .block, .block.show, .boot{ transition:none; animation:none; }
-      .btn:active{ transform:none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <div class="boot" id="boot">
-      <div>
-        <div class="bootInner">
-          <span class="spinner" aria-hidden="true"></span>
-          <span id="bootText">認証中…</span>
-        </div>
-        <div class="bootSub" id="bootSub">端末を確認しています</div>
+  <div class="boot" id="boot">
+    <div>
+      <div class="bootInner">
+        <span class="spinner"></span>
+        <span id="bootText">認証中…</span>
       </div>
+      <div class="bootSub" id="bootSub">端末を確認しています</div>
     </div>
-
-    <!-- ブロック1 -->
-    <div class="brand block" id="b1">
-      <div class="logo" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8V8.2Z" stroke="rgba(255,255,255,.95)" stroke-width="1.5" />
-          <path d="M12 4v18" stroke="rgba(255,255,255,.75)" stroke-width="1.2"/>
-          <path d="M4 8.2 12 12l8-3.8" stroke="rgba(255,255,255,.75)" stroke-width="1.2"/>
-        </svg>
-      </div>
-      <div class="title">
-        <div class="h">SANKO 物流課ポータル</div>
-        <div class="s">入口（ホーム画面用）</div>
-      </div>
-    </div>
-
-    <!-- ブロック2 -->
-    <div class="statusRow block" id="b2" aria-live="polite">
-      <div class="statusLeft">
-        <span class="pill">認証OK</span>
-        <div class="statusText">ログインできます</div>
-      </div>
-      <div class="dot on" aria-hidden="true"></div>
-    </div>
-
-    <!-- ブロック3 -->
-    <div class="card block" id="b3">
-      <p class="big">ポータルを開く</p>
-      <p class="desc">
-        ここは「ログイン」ページです。<br>
-        このページをホーム画面に追加して、いつでも1タップで開けます。
-      </p>
-
-      <button class="btn" id="openBtn">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" style="width:18px;height:18px;">
-          <path d="M10 17l5-5-5-5" stroke="#071018" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M4 12h10" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
-          <path d="M14 4h5v16h-5" stroke="#071018" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-        <span id="btnLabel">ログイン</span>
-      </button>
-
-      <div class="hint">※ 実際の認証は行いません（見た目だけ）</div>
-    </div>
-
   </div>
 
-  <script>
-    // ▼ あなたのGAS WebアプリURLに置き換える
-    const GAS_URL = "https://script.google.com/macros/s/ここにあなたのURL/exec";
+  <div class="brand block" id="b1">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none">
+        <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8Z" stroke="#fff" stroke-width="1.4"/>
+      </svg>
+    </div>
+    <div class="title">
+      <div class="h">SANKO 物流課ポータル</div>
+      <div class="s">入口（ホーム画面用）</div>
+    </div>
+  </div>
 
-    const boot = document.getElementById("boot");
-    const bootText = document.getElementById("bootText");
-    const bootSub = document.getElementById("bootSub");
+  <div class="statusRow block" id="b2">
+    <div class="statusLeft">
+      <span class="pill">認証OK</span>
+      <span class="statusText">ログインできます</span>
+    </div>
+    <div class="dot"></div>
+  </div>
 
-    const b1 = document.getElementById("b1");
-    const b2 = document.getElementById("b2");
-    const b3 = document.getElementById("b3");
+  <div class="card block" id="b3">
+    <p class="big">ポータルを開く</p>
+    <p class="desc">このページをホーム画面に追加して、1タップで開けます。</p>
+    <button class="btn" id="openBtn">ログイン</button>
+  </div>
 
-    const btn = document.getElementById("openBtn");
-    const btnLabel = document.getElementById("btnLabel");
+</div>
 
-    function show(el){ el.classList.add("show"); }
+<script>
+  const GAS_URL = "https://script.google.com/macros/s/ここにあなたのURL/exec";
 
-    function startSequence(){
-      // 1) 認証中
-      bootText.textContent = "認証中…";
-      bootSub.textContent = "端末を確認しています";
+  const boot = document.getElementById("boot");
+  const bootText = document.getElementById("bootText");
+  const bootSub = document.getElementById("bootSub");
+  const b1 = document.getElementById("b1");
+  const b2 = document.getElementById("b2");
+  const b3 = document.getElementById("b3");
 
-      // 2) 認証OK（まだ文字だけ）
-      setTimeout(() => {
-        bootText.textContent = "認証OK";
-        bootSub.textContent = "ログインできます";
-      }, 1050);
+  function show(el){ el.classList.add("show"); }
 
-      // 3) bootを先に消す（ごたつき回避）
-      setTimeout(() => {
-        boot.classList.add("hide");
-      }, 1350);
+  function startSequence(){
+    setTimeout(()=>{
+      bootText.textContent="認証OK";
+      bootSub.textContent="ログインできます";
+    },1050);
 
-      // 4) 3ブロックを順番に（奥から手前へ）
-      setTimeout(() => show(b1), 1620);
-      setTimeout(() => show(b2), 1920);
-      setTimeout(() => show(b3), 2220);
-    }
+    setTimeout(()=>boot.classList.add("hide"),1350);
 
-    startSequence();
+    setTimeout(()=>show(b1),1500);
+    setTimeout(()=>show(b2),1610);
+    setTimeout(()=>show(b3),1720);
+  }
+  startSequence();
 
-    btn.addEventListener("click", () => {
-      btnLabel.textContent = "接続中…";
-      btn.style.opacity = "0.92";
-      setTimeout(() => { location.href = GAS_URL; }, 180);
-    });
-  </script>
+  document.getElementById("openBtn").onclick=()=>{
+    location.href=GAS_URL;
+  };
+</script>
 </body>
 </html>
