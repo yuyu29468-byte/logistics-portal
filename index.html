@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
+  <!-- ホーム画面アイコン -->
   <link rel="apple-touch-icon" href="./apple-touch-icon.PNG">
   <link rel="icon" href="./apple-touch-icon.PNG">
 
@@ -25,7 +26,8 @@
       --shadow:0 18px 50px rgba(0,0,0,.35);
     }
 
-    *{box-sizing:border-box}
+    *{ box-sizing:border-box }
+
     body{
       margin:0;
       font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
@@ -42,7 +44,7 @@
     }
 
     .wrap{
-      width:min(420px, 100%);
+      width:min(420px,100%);
       perspective:900px;
     }
 
@@ -53,7 +55,7 @@
       justify-content:center;
       min-height:55vh;
       text-align:center;
-      transition:opacity .24s ease, transform .24s ease;
+      transition:opacity .25s ease, transform .25s ease;
     }
     .boot.hide{
       opacity:0;
@@ -67,8 +69,8 @@
       display:flex;
       align-items:center;
       gap:10px;
-      font-weight:900;
       font-size:16px;
+      font-weight:900;
     }
     .bootSub{
       margin-top:10px;
@@ -95,23 +97,13 @@
     .block.show{
       opacity:1;
       pointer-events:auto;
-      animation:
-        popFromBack .44s cubic-bezier(.18,1.25,.25,1) both,
-        microJitter .14s ease-out .36s both;
+      animation:popFromBack .42s cubic-bezier(.18,1.2,.25,1) both;
     }
 
     @keyframes popFromBack{
       0%   { transform:translateZ(-120px) translateY(14px) scale(.95); }
-      70%  { transform:translateZ(12px) translateY(-3px) scale(1.03); }
+      70%  { transform:translateZ(10px) translateY(-3px) scale(1.02); }
       100% { transform:translateZ(0) translateY(0) scale(1); }
-    }
-
-    /* 微振動（短く・1回だけ） */
-    @keyframes microJitter{
-      0%  { transform:translateX(0); }
-      40% { transform:translateX(-1px); }
-      80% { transform:translateX(1px); }
-      100%{ transform:translateX(0); }
     }
 
     /* ===== ブロック1：タイトル ===== */
@@ -128,22 +120,35 @@
       display:grid;place-items:center;
       border:1px solid rgba(255,255,255,.18);
     }
-    .logo svg{width:24px;height:24px}
-    .title .h{ font-size:18px;font-weight:900; }
-    .title .s{ font-size:12px;color:var(--muted);margin-top:4px; }
+    .logo svg{ width:24px;height:24px }
+
+    .title .h{
+      font-size:18px;
+      font-weight:900;
+      letter-spacing:.02em;
+    }
+    .title .s{
+      font-size:12px;
+      margin-top:4px;
+      color:var(--muted);
+    }
 
     /* ===== ブロック2：認証OK ===== */
     .statusRow{
       display:flex;
-      justify-content:space-between;
       align-items:center;
+      justify-content:space-between;
       padding:10px 12px;
       border-radius:14px;
       background:rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.1);
       margin-bottom:14px;
     }
-    .statusLeft{ display:flex;align-items:center;gap:10px; }
+    .statusLeft{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
     .pill{
       padding:6px 10px;
       border-radius:999px;
@@ -152,7 +157,10 @@
       background:rgba(47,164,169,.16);
       border:1px solid rgba(47,164,169,.25);
     }
-    .statusText{ font-size:13px;color:var(--muted); }
+    .statusText{
+      font-size:13px;
+      color:var(--muted);
+    }
     .dot{
       width:10px;height:10px;border-radius:50%;
       background:var(--accent2);
@@ -167,8 +175,17 @@
       box-shadow:var(--shadow);
       padding:16px;
     }
-    .big{ font-size:16px;font-weight:900;margin:0 0 6px; }
-    .desc{ font-size:13px;color:var(--muted);margin:0 0 14px; }
+    .big{
+      margin:0 0 6px;
+      font-size:16px;
+      font-weight:900;
+    }
+    .desc{
+      margin:0 0 14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.55;
+    }
 
     .btn{
       width:100%;
@@ -179,25 +196,30 @@
       font-weight:900;
       background:linear-gradient(135deg, var(--accent2), var(--accent));
       cursor:pointer;
+      color:#071018;
+      -webkit-tap-highlight-color: transparent;
     }
+    .btn:active{ transform:scale(.97); }
   </style>
 </head>
 
 <body>
 <div class="wrap">
 
+  <!-- boot -->
   <div class="boot" id="boot">
     <div>
       <div class="bootInner">
-        <span class="spinner"></span>
+        <span class="spinner" aria-hidden="true"></span>
         <span id="bootText">認証中…</span>
       </div>
       <div class="bootSub" id="bootSub">端末を確認しています</div>
     </div>
   </div>
 
+  <!-- block 1 -->
   <div class="brand block" id="b1">
-    <div class="logo">
+    <div class="logo" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none">
         <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8Z" stroke="#fff" stroke-width="1.4"/>
       </svg>
@@ -208,28 +230,36 @@
     </div>
   </div>
 
+  <!-- block 2 -->
   <div class="statusRow block" id="b2">
     <div class="statusLeft">
       <span class="pill">認証OK</span>
       <span class="statusText">ログインできます</span>
     </div>
-    <div class="dot"></div>
+    <div class="dot" aria-hidden="true"></div>
   </div>
 
+  <!-- block 3 -->
   <div class="card block" id="b3">
     <p class="big">ポータルを開く</p>
-    <p class="desc">このページをホーム画面に追加して、1タップで開けます。</p>
+    <p class="desc">
+      このページをホーム画面に追加すると、<br>
+      いつでも1タップでポータルを開けます。
+    </p>
     <button class="btn" id="openBtn">ログイン</button>
   </div>
 
 </div>
 
 <script>
-  const GAS_URL = "https://script.google.com/macros/s/ここにあなたのURL/exec";
+  // ★ここに指定URLを固定で入れました
+  const GAS_URL =
+    "https://script.google.com/a/macros/sankovalve.com/s/AKfycbxxuv4NENvCJ2jcokuykv0LnZrYRCKTBdL0uHfUim0EzGUOBWEjFbHKSpimGFiu9VpL/exec";
 
   const boot = document.getElementById("boot");
   const bootText = document.getElementById("bootText");
   const bootSub = document.getElementById("bootSub");
+
   const b1 = document.getElementById("b1");
   const b2 = document.getElementById("b2");
   const b3 = document.getElementById("b3");
@@ -237,22 +267,26 @@
   function show(el){ el.classList.add("show"); }
 
   function startSequence(){
+    // 認証OK（ここはそのまま）
     setTimeout(()=>{
-      bootText.textContent="認証OK";
-      bootSub.textContent="ログインできます";
-    },1050);
+      bootText.textContent = "認証OK";
+      bootSub.textContent = "ログインできます";
+    }, 1050);
 
-    setTimeout(()=>boot.classList.add("hide"),1350);
+    // bootを消す
+    setTimeout(()=> boot.classList.add("hide"), 1350);
 
-    setTimeout(()=>show(b1),1500);
-    setTimeout(()=>show(b2),1610);
-    setTimeout(()=>show(b3),1720);
+    // ポップ（キビキビ）
+    setTimeout(()=> show(b1), 1500);
+    setTimeout(()=> show(b2), 1610);
+    setTimeout(()=> show(b3), 1720);
   }
+
   startSequence();
 
-  document.getElementById("openBtn").onclick=()=>{
-    location.href=GAS_URL;
-  };
+  document.getElementById("openBtn").addEventListener("click", ()=>{
+    location.href = GAS_URL;
+  });
 </script>
 </body>
 </html>
