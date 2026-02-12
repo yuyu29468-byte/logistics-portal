@@ -4,11 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
-  <!-- ホーム画面アイコン -->
-  <link rel="apple-touch-icon" href="./apple-touch-icon.PNG">
-  <link rel="icon" href="./apple-touch-icon.PNG">
+  <!-- ホーム画面アイコン（GitHub上の“実ファイル名”に合わせること） -->
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <link rel="icon" href="./apple-touch-icon.png">
 
   <meta name="apple-mobile-web-app-title" content="物流課ポータル">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
   <title>SANKO 物流課ポータル</title>
   <meta name="theme-color" content="#0b1220">
 
@@ -55,7 +58,7 @@
       justify-content:center;
       min-height:55vh;
       text-align:center;
-      transition:opacity .25s ease, transform .25s ease;
+      transition:opacity .22s ease, transform .22s ease;
     }
     .boot.hide{
       opacity:0;
@@ -97,7 +100,7 @@
     .block.show{
       opacity:1;
       pointer-events:auto;
-      animation:popFromBack .42s cubic-bezier(.18,1.2,.25,1) both;
+      animation:popFromBack .40s cubic-bezier(.18,1.2,.25,1) both;
     }
 
     @keyframes popFromBack{
@@ -252,14 +255,12 @@
 </div>
 
 <script>
-  // ★ここに指定URLを固定で入れました
-  const GAS_URL =
-    "https://script.google.com/a/macros/sankovalve.com/s/AKfycbxxuv4NENvCJ2jcokuykv0LnZrYRCKTBdL0uHfUim0EzGUOBWEjFbHKSpimGFiu9VpL/exec";
+  // ✅ GitHubだけ運用：portal.html へ遷移
+  const PORTAL_URL = "./portal.html";
 
   const boot = document.getElementById("boot");
   const bootText = document.getElementById("bootText");
   const bootSub = document.getElementById("bootSub");
-
   const b1 = document.getElementById("b1");
   const b2 = document.getElementById("b2");
   const b3 = document.getElementById("b3");
@@ -267,16 +268,13 @@
   function show(el){ el.classList.add("show"); }
 
   function startSequence(){
-    // 認証OK（ここはそのまま）
     setTimeout(()=>{
       bootText.textContent = "認証OK";
       bootSub.textContent = "ログインできます";
     }, 1050);
 
-    // bootを消す
     setTimeout(()=> boot.classList.add("hide"), 1350);
 
-    // ポップ（キビキビ）
     setTimeout(()=> show(b1), 1500);
     setTimeout(()=> show(b2), 1610);
     setTimeout(()=> show(b3), 1720);
@@ -285,7 +283,11 @@
   startSequence();
 
   document.getElementById("openBtn").addEventListener("click", ()=>{
-    location.href = GAS_URL;
+    const btn = document.getElementById("openBtn");
+    btn.textContent = "接続中…";
+    btn.disabled = true;
+    btn.style.opacity = "0.88";
+    setTimeout(()=> location.href = PORTAL_URL, 180);
   });
 </script>
 </body>
