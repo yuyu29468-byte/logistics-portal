@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+  <title>SANKO 物流課ポータル</title>
+  <meta name="theme-color" content="#0b1220">
+
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:rgba(255,255,255,.08);
+      --card2:rgba(255,255,255,.05);
+      --text:#eaf0ff;
+      --muted:rgba(234,240,255,.72);
+      --line:rgba(255,255,255,.12);
+      --radius:18px;
+      --shadow:0 18px 50px rgba(0,0,0,.35);
+
+      --official1:#3B82F6; --official2:#2563EB;
+      --entry1:#10B981;    --entry2:#059669;
+      --search1:#06B6D4;   --search2:#7C3AED;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;
+      background:
+        radial-gradient(800px 400px at 20% 10%, rgba(47,164,169,.25), transparent 55%),
+        radial-gradient(700px 350px at 90% 20%, rgba(124,231,222,.18), transparent 55%),
+        var(--bg);
+      color:var(--text);
+      padding:18px 14px 28px;
+    }
+
+    .wrap{
+      width:min(560px,100%);
+      margin:0 auto;
+      perspective:900px;
+    }
+
+    /* 奥からポップ */
+    .pop{
+      opacity:0;
+      transform:translateZ(-120px) translateY(12px) scale(.97);
+      will-change:transform,opacity;
+    }
+    .pop.show{
+      opacity:1;
+      animation:pop .40s cubic-bezier(.18,1.2,.25,1) both;
+    }
+    @keyframes pop{
+      0%{opacity:0; transform:translateZ(-120px) translateY(14px) scale(.95);}
+      70%{opacity:1; transform:translateZ(10px) translateY(-3px) scale(1.02);}
+      100%{opacity:1; transform:none;}
+    }
+
+    .brand{
+      display:flex;align-items:center;gap:12px;margin:6px 2px 14px;
+    }
+    .logo{
+      width:46px;height:46px;border-radius:14px;
+      background:linear-gradient(135deg,#2FA4A9,#7ce7de);
+      display:grid;place-items:center;
+      box-shadow:0 12px 30px rgba(47,164,169,.25);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .logo svg{width:24px;height:24px; stroke:#fff; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round;}
+    .title .h{font-size:20px;font-weight:950;letter-spacing:.02em}
+    .title .s{font-size:12px;color:rgba(234,240,255,.62);margin-top:4px}
+
+    .section{
+      background:linear-gradient(180deg,var(--card),var(--card2));
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:14px;
+      margin:14px 0;
+    }
+    .section h2{
+      margin:0 0 10px;
+      font-size:12px;
+      letter-spacing:.04em;
+      color:rgba(234,240,255,.6);
+    }
+
+    /* 1列横長カード */
+    .list{display:flex;flex-direction:column;gap:12px;}
+
+    a.item{
+      text-decoration:none;
+      color:var(--text);
+      background:rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius:18px;
+      padding:14px;
+      display:flex;
+      align-items:center;
+      gap:14px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    a.item:active{transform:scale(.99);}
+
+    .iconWrap{
+      width:52px;height:52px;border-radius:16px;
+      display:grid;place-items:center;
+      flex:0 0 52px;
+    }
+    .official{background:linear-gradient(135deg,var(--official1),var(--official2))}
+    .entry{background:linear-gradient(135deg,var(--entry1),var(--entry2))}
+    .search{background:linear-gradient(135deg,var(--search1),var(--search2))}
+
+    .iconWrap svg{
+      width:24px;height:24px;
+      stroke:#fff; stroke-width:2.4; fill:none;
+      stroke-linecap:round; stroke-linejoin:round;
+    }
+
+    .txt{min-width:0}
+    .name{
+      font-size:16px;
+      font-weight:950;
+      letter-spacing:.01em;
+    }
+    .desc{
+      margin-top:4px;
+      font-size:13px;
+      color:rgba(234,240,255,.70);
+      line-height:1.35;
+    }
+
+    .tag{
+      margin-left:auto;
+      font-size:12px;
+      font-weight:850;
+      color:rgba(234,240,255,.75);
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);
+      white-space:nowrap;
+    }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+
+  <div class="brand pop" id="p1">
+    <div class="logo" aria-hidden="true">
+      <svg viewBox="0 0 24 24">
+        <path d="M4 8.2 12 4l8 4.2v9.6L12 22 4 17.8Z"/>
+        <path d="M12 4v18"/>
+        <path d="M4 8.2 12 12l8-3.8"/>
+      </svg>
+    </div>
+    <div class="title">
+      <div class="h">SANKO 物流課ポータル</div>
+      <div class="s">よく使うリンク集（物流課）</div>
+    </div>
+  </div>
+
+  <div class="section pop" id="p2">
+    <h2>公式・既存</h2>
+    <div class="list">
+      <a class="item" href="https://service.kaonavi.jp/sp" target="_blank" rel="noopener">
+        <div class="iconWrap official" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M7 7h10"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">カオナビ</div>
+          <div class="desc">評価シート・社員データベース</div>
+        </div>
+        <div class="tag">公式</div>
+      </a>
+
+      <a class="item" href="https://auth.mobility-service.jp/auth/realms/mobi/protocol/openid-connect/auth?response_type=code&client_id=opt-03&scope=openid+profile&state=-j9OpSN1kxWH5W6GX17E1VTLjK36KPL8U5P9p1XK7bM%3D&redirect_uri=https://mobipass.mobility-service.jp/shayosha/login/oauth2/code/sso"
+         target="_blank" rel="noopener">
+        <div class="iconWrap official" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 7h11v10H3z"/><path d="M14 10h7v7"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">モビリティサービス</div>
+          <div class="desc">毎日：運転日報を忘れずに</div>
+        </div>
+        <div class="tag">公式</div>
+      </a>
+
+      <a class="item" href="https://notebooklm.google.com/?icid=home_maincta&_gl=1*142wskt*_up*MQ..*_ga*MTI5NTQxMjE1Ny4xNzcwNjk4NDky*_ga_W0LDH41ZCB*czE3NzA2OTg0OTIkbzEkZzAkdDE3NzA2OTg0OTIkajYwJGwwJGgw"
+         target="_blank" rel="noopener">
+        <div class="iconWrap official" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">NotebookLM</div>
+          <div class="desc">ロケーションAI・新人のために</div>
+        </div>
+        <div class="tag">公式</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section pop" id="p3">
+    <h2>入力・登録</h2>
+    <div class="list">
+      <a class="item" href="https://docs.google.com/forms/d/e/1FAIpQLSdP2rlYSFBJIEgrvcQpR9TGyZA2N8DEUHX06QfuihTcfFdZTw/viewform"
+         target="_blank" rel="noopener">
+        <div class="iconWrap entry" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M20 7 10 17l-5-5"/><path d="M4 4h16v16H4z"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">倉庫側完了フォーム</div>
+          <div class="desc">先納期登録したものを「完了」処理する</div>
+        </div>
+        <div class="tag">入力</div>
+      </a>
+
+      <a class="item" href="https://docs.google.com/forms/d/e/1FAIpQLSd6vdZCZkCIqvR0nWIjtWVfkmuK59AGGQM4PWWMhuS0yyvk1A/viewform"
+         target="_blank" rel="noopener">
+        <div class="iconWrap entry" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 8v5l3 2"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">先納期品 登録</div>
+          <div class="desc">すぐに出ないもの（滞留）を登録する</div>
+        </div>
+        <div class="tag">入力</div>
+      </a>
+
+      <a class="item" href="https://docs.google.com/forms/d/e/1FAIpQLSeSwq0hHhe0w0yXs2HigA1P3UGga7kbcl5p_WK8g9iyAvsTNg/viewform"
+         target="_blank" rel="noopener">
+        <div class="iconWrap entry" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M8 7h8M8 11h8M8 15h6"/><path d="M7 3h10v18H7z"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">在庫確認・発注記録</div>
+          <div class="desc">発注してもしなくても「確認した証」として残す</div>
+        </div>
+        <div class="tag">入力</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="section pop" id="p4">
+    <h2>確認・検索</h2>
+    <div class="list">
+      <a class="item" href="https://script.google.com/a/macros/sankovalve.com/s/AKfycbzqXOAigV5Bix8Tgn_aZLq0A-Lb-D5OMYDJVRGOXx5z9r6XP2XMn6mzJWVlQ1ZDGWC4/exec"
+         target="_blank" rel="noopener">
+        <div class="iconWrap search" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">在庫確認・発注検索</div>
+          <div class="desc">「発注記録」で登録した内容を検索できる</div>
+        </div>
+        <div class="tag">検索</div>
+      </a>
+
+      <a class="item" href="https://www.google.com/maps/d/viewer?mid=1-AKWWe5pOuI2dwbGwv73sg_UcnBlBuU&g_ep=CAESCjExLjE0My4zMDUYACDdYio2LDk0Mjg0NDg0LDk0MjA3Mzk0LDk0MjA3NTA2LDk0MjA4NTA2LDk0MjE4NjUzLDk0MjI5ODM5QgJKUA%3D%3D&skid=9e5d63fc-2087-4027-9b45-e24fdef7e5d9&shorturl=1&ll=26.401854995773366%2C127.86074165&z=10"
+         target="_blank" rel="noopener">
+        <div class="iconWrap search" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 21s7-7 7-12a7 7 0 0 0-14 0c0 5 7 12 7 12z"/><circle cx="12" cy="9" r="2"/></svg>
+        </div>
+        <div class="txt">
+          <div class="name">配送現場共有マップ</div>
+          <div class="desc">現場の場所・注意事項を登録した物流課マップ</div>
+        </div>
+        <div class="tag">地図</div>
+      </a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // ポップ順（統一感）
+  ["p1","p2","p3","p4"].forEach((id,i)=>{
+    setTimeout(()=>document.getElementById(id).classList.add("show"), 120 + i*110);
+  });
+</script>
+</body>
+</html>
